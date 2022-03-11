@@ -5,11 +5,11 @@ from ads import views
 
 
 urlpatterns = [
-    path('list/',  views.AdListView.as_view()),
-    path('', views.AdCreateView.as_view()),
-    path('<int:pk>/', views.AdDetailView.as_view()),
-    path('<int:pk>/update/', views.AdUpdateView.as_view()),
-    path('<int:pk>/delete/', views.AdDeleteView.as_view()),
+    path('list/',  views.AdsListView.as_view()),
+    path('', views.AdsCreateView.as_view()),
+    path('<int:pk>/', views.AdsDetailView.as_view()),
+    path('<int:pk>/update/', views.AdsUpdateView.as_view()),
+    path('<int:pk>/delete/', views.AdsDeleteView.as_view()),
     path('<int:pk>/upload_image/', views.UploadImageView.as_view()),
 
 
