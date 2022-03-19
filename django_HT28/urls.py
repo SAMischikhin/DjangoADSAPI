@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django_HT28 import settings
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = routers.SimpleRouter()
 router.register('location', LocationViewSet)
@@ -28,6 +29,9 @@ urlpatterns = [
     path("ad/", include("ads.urls")),
     path("cat/", include("cats.urls")),
     path("user/", include("users.urls")),
+    path("selection/", include("selections.urls")),
+    path('token/', TokenObtainPairView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += router.urls

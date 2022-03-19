@@ -1,4 +1,5 @@
 from ads.models import User
+from ads.permissions import IsModeratorPermission, IsOwnerPermission
 
 from users.serializers import UserSerializer, UserCreateSerializer, UserUpdateSerializer
 
@@ -24,8 +25,10 @@ class UserCreateView(CreateAPIView):
 class UserUpdateView(UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
+    permission_classes = [IsModeratorPermission | IsOwnerPermission]
 
 
 class UserDeleteView(DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsModeratorPermission | IsOwnerPermission]

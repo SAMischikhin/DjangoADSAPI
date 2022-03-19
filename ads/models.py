@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -21,18 +22,20 @@ class Location(models.Model):
         verbose_name_plural = 'Локации'
 
 
-class User(models.Model):
-    first_name = models.CharField(max_length=30, blank=True, null=True)
-    last_name = models.CharField(max_length=30, blank=True, null=True)
-    username = models.CharField(max_length=30) #только en
-    password = models.CharField(max_length=30) #специальное поле?
-    role = models.CharField(max_length=30, blank=True, null=True)
+class User(AbstractUser):
+    MODERATOR = "moderator"
+    MEMBER = "member"
+    ROLES = [(MODERATOR, MODERATOR), (MEMBER, MEMBER)]
+    role = models.CharField(max_length=30, choices=ROLES, default=MEMBER)
+    # role = models.CharField(max_length=30, blank=True, null=True)
+    password = models.CharField(max_length=100)
     age = models.PositiveIntegerField(blank=True, null=True)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)#, blank=True, null=True)
+    location = models.ForeignKey(Location, on_delete=models.RESTRICT, blank=True, null=True)
 
-    class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+    def save(self, *args, **kwargs):
+        self.set_password(self.password)
+
+        super().save()
 
 
 class Ads(models.Model):
@@ -44,3 +47,10 @@ class Ads(models.Model):
     image = models.ImageField(upload_to="image/", blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     is_published = models.BooleanField(default=False)
+
+    
+class Selection(models.Model):
+    items = models.ManyToManyField(Ads)
+    owner = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=50)
+

@@ -1,6 +1,8 @@
+from ads.permissions import IsModeratorPermission, IsOwnerPermission
 from ads.serializers import AdsSerializer, AdsCreateSerializer,  AdsUpdateSerializer
 from rest_framework.viewsets import ModelViewSet
 from users.serializers import LocationSerializer
+from rest_framework.permissions import IsAuthenticated
 
 from django.http import JsonResponse
 from django.views.generic import UpdateView
@@ -37,9 +39,11 @@ class AdsListView(ListAPIView):
 
         return super().get(request, *args, **kwargs)
 
+
 class AdsDetailView(RetrieveAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class AdsCreateView(CreateAPIView):
@@ -50,11 +54,13 @@ class AdsCreateView(CreateAPIView):
 class AdsUpdateView(UpdateAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsUpdateSerializer
+    permission_classes = [IsModeratorPermission | IsOwnerPermission]
 
 
 class AdsDeleteView(DestroyAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
+    permission_classes = [IsModeratorPermission | IsOwnerPermission]
 
 
 class UploadImageView(UpdateView):

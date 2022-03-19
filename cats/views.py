@@ -1,3 +1,4 @@
+from ads.permissions import IsModeratorPermission, IsOwnerPermission
 from ads.serializers import CategorySerializer
 
 from ads.models import Category
@@ -23,8 +24,10 @@ class CategoryCreateView(CreateAPIView):
 class CategoryUpdateView(UpdateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsModeratorPermission | IsOwnerPermission]
 
 
 class CategoryDeleteView(DestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsOwnerPermission | IsModeratorPermission]

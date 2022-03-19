@@ -2,7 +2,7 @@ from ads.models import Location, User
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-""" Request for user create
+""" Request for user create/update
 {
     "first_name": "test",
     "last_name": "test",
@@ -38,17 +38,12 @@ class UserCreateSerializer(ModelSerializer):
         return super().is_valid(raise_exception=raise_exception)
 
     def create(self, validated_data):
+        print(validated_data)
         obj, _ = Location.objects.get_or_create(name=self._location)
         validated_data['location'] = obj
+
         user = User.objects.create(**validated_data)
         return user
-
-    # def create(self, validated_data):
-    #     user = User.objects.create(**validated_data)
-    #     # for locations in self._locations:
-    #     #     obj, _ = Location.objects.get_or_create(name=locations)
-    #     #     user.location.add(obj)
-    #     return user
 
     class Meta:
         model = User
