@@ -3,4 +3,6 @@
 
 /Scripts/
 /Lib/
-/media/
+/Lib/site-packages/
+/.idea/
+/.mypy_cache/
