@@ -5,4 +5,5 @@
 /Lib/site-packages/
 /.idea/
 /.mypy_cache/
+__pycache__/
 
