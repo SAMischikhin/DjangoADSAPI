@@ -4,14 +4,11 @@ from rest_framework.serializers import ModelSerializer
 
 """ Request for user create/update
 {
-    "first_name": "test",
-    "last_name": "test",
-    "username": "updatedtestusername",
-    "password": "test",
-    "role": "farmer",
-    "age": 100,
-    "location": "Kirsanov, Plechanovskaya ul., 13"
-    }"""
+    "username": "test75",
+    "password": "test75",
+    "birth_date" : "2000-03-03",
+    "email": "test75@yandex.ru"
+}"""
 
 class LocationSerializer(ModelSerializer):
     class Meta:
@@ -34,20 +31,22 @@ class UserCreateSerializer(ModelSerializer):
         slug_field="name")
 
     def is_valid(self, raise_exception=False):
-        self._location = self.initial_data.pop("location")
+        if "location" in self.initial_data:
+            self._location = self.initial_data.pop("location")
+        else: self._location = None
         return super().is_valid(raise_exception=raise_exception)
 
     def create(self, validated_data):
-        print(validated_data)
-        obj, _ = Location.objects.get_or_create(name=self._location)
-        validated_data['location'] = obj
+        if self._location != None:
+            obj, _ = Location.objects.get_or_create(name=self._location)
+            validated_data['location'] = obj
 
         user = User.objects.create(**validated_data)
         return user
 
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ["username", "birth_date", "location"]
 
 
 class UserUpdateSerializer(ModelSerializer):

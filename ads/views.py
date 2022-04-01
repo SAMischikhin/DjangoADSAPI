@@ -1,5 +1,5 @@
 from ads.permissions import IsModeratorPermission, IsOwnerPermission
-from ads.serializers import AdsSerializer, AdsCreateSerializer,  AdsUpdateSerializer
+from ads.serializers import AdsSerializer, AdsCreateSerializer, AdsUpdateSerializer, AdsListSerializer
 from rest_framework.viewsets import ModelViewSet
 from users.serializers import LocationSerializer
 from rest_framework.permissions import IsAuthenticated
@@ -15,7 +15,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView,\
 
 class AdsListView(ListAPIView):
     queryset = Ads.objects.all()#.order_by("-price")
-    serializer_class = AdsSerializer
+    serializer_class = AdsListSerializer
 
     def get(self, request, *args, **kwargs):
         ads_description = request.GET.get("text", None)

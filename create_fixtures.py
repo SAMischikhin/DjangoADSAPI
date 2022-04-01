@@ -8,7 +8,7 @@ DATA_DIR = os.path.join(BASE_DIR, 'datasets')
 FIXTURE_DIR = os.path.join(BASE_DIR, 'fixtures')
 
 
-def str_to_val(item:str)-> Union[str,bool,float,int]:
+def str_to_val(item:str) -> Union[str, bool, float, int]:
     if item == 'TRUE':
         return True
     elif item == 'FALSE':
